@@ -1,0 +1,18 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Run outputs
+out/
+output/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
