@@ -41,8 +41,8 @@ The persona prompts are plain Markdown. Edit them in place to shift the review f
 Requires Python 3.10+, a Google Cloud project with Vertex AI / Gemini enabled, and Tesseract installed locally if you want OCR on image inputs.
 
 ```bash
-git clone https://github.com/k3rt4s/ai-architect-copilot
-cd ai-architect-copilot
+git clone https://github.com/k3rt4s/ai-architect-copilot-portfolio
+cd ai-architect-copilot-portfolio
 python -m venv .venv && . .venv/bin/activate   # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
@@ -60,4 +60,4 @@ python orchestrator.py --folder "<docs_dir>" --out "<output_dir>"
 
 ## License
 
-MIT. See `LICENSE`.
+All Rights Reserved. Published for portfolio review only. See `LICENSE` and `PORTFOLIO_SAMPLE.md`.

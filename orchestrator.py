@@ -102,67 +102,29 @@ def run_sequential_analysis(
     model: str,
     output_dir: str,
 ) -> None:
-    out_path = Path(output_dir)
-    out_path.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    """Run the three-stage Gemini pipeline against the ingested corpus.
 
-    personas_dir = _PACKAGE_DIR / "personas"
+    Production behavior:
+        Stage 1: load Persona_01 prompt, instantiate a GeminiRunner, feed it
+                 the ingested document text, write the structured index to
+                 ``01_Index_<timestamp>.md``.
+        Stage 2: load Persona_02 prompt, feed the Stage 1 index, write the
+                 gap-analysis report to ``02_Gap_Analysis_<timestamp>.md``.
+        Stage 3: load Persona_03 prompt with the Google Search tool attached,
+                 run an interactive chat loop against the gap analysis,
+                 stream the transcript to ``chat_transcript_<timestamp>.md``.
 
-    # Stage 1: Indexing
-    print(f"i STAGE 1: Indexing {len(file_list)} files...")
-    p1 = (personas_dir / "Persona_01_Arch_Corpus_Intake_and_Indexer.md").read_text()
-    indexer = GeminiRunner(
-        agent_name="Indexer",
-        instruction=p1,
-        model=model,
-        vertex_project=project,
-        vertex_location=location,
+    This portfolio sample stubs the stage orchestration intentionally. The
+    surrounding architecture, the document-ingestion layer (`extract_text`),
+    and the SDK wrapper (`gemini_runner.GeminiRunner`) are shown so the
+    review-time pattern is auditable, but the tuned three-stage sequence and
+    its persona prompts are proprietary.
+    """
+    raise NotImplementedError(
+        "Stage orchestration withheld. This repository is a portfolio "
+        "sample. The production three-stage Gemini pipeline and its persona "
+        "prompts are proprietary."
     )
-    index_results = indexer.ask(f"FILES: {file_list}\n\nCONTENT:\n{docs_text[:1_000_000]}")
-    (out_path / f"01_Index_{timestamp}.md").write_text(index_results)
-
-    # Stage 2: Gap Analysis
-    print("i STAGE 2: Performing architecture gap analysis...")
-    p2 = (personas_dir / "Persona_02_Arch_Gap_Analyst.md").read_text()
-    analyst = GeminiRunner(
-        agent_name="Analyst",
-        instruction=p2,
-        model=model,
-        vertex_project=project,
-        vertex_location=location,
-    )
-    gap_analysis = analyst.ask(f"INDEX:\n{index_results}")
-    (out_path / f"02_Gap_Analysis_{timestamp}.md").write_text(gap_analysis)
-    print(f"\n--- INITIAL GAP ANALYSIS ---\n{gap_analysis}\n")
-
-    # Stage 3: Interactive Chat (Internet Enabled)
-    print("i STAGE 3: Initializing research-enabled advisor...")
-    p3 = (personas_dir / "Persona_03_Arch_Interactive_Chat_Advisor.md").read_text()
-    advisor = GeminiRunner(
-        agent_name="Advisor",
-        instruction=p3,
-        model=model,
-        vertex_project=project,
-        vertex_location=location,
-        use_search=True,
-    )
-
-    transcript_path = out_path / f"chat_transcript_{timestamp}.md"
-    log = f"# ARCH REVIEW RESEARCH SESSION: {timestamp}\n# FILES: {file_list}\n\n"
-
-    while True:
-        try:
-            u_input = input("\nYou: ").strip()
-            if not u_input or u_input.lower() in {"exit", "quit"}:
-                break
-            response = advisor.ask(
-                f"SYSTEM: Use internal context and internet research. USER: {u_input}"
-            )
-            log += f"**User:** {u_input}\n\n**Gemini:** {response}\n\n---\n"
-            transcript_path.write_text(log)
-            print(f"\nGemini: {response}")
-        except KeyboardInterrupt:
-            break
 
 
 def main() -> None:
