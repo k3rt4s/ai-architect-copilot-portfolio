@@ -46,7 +46,7 @@ Running
 python orchestrator.py --folder "<docs_dir>" --out "<output_dir>"
 ```
 
-will install dependencies, ingest every supported file under `<docs_dir>` via the extraction layer, print a portfolio-sample notice, and exit with code 2 before reaching the three-stage Gemini pipeline. The persona prompts under `personas/` are also placeholders; the production prompts are proprietary. See `PORTFOLIO_SAMPLE.md` for the full disclosure.
+will ingest every supported file under `<docs_dir>` via the extraction layer, print a portfolio-sample notice with the ingest counts, and exit cleanly (code 0) before reaching the three-stage Gemini pipeline. The persona prompts under `personas/` are also placeholders; the production prompts are proprietary. See `PORTFOLIO_SAMPLE.md` for the full disclosure.
 
 Setup, if you want to exercise the ingestion path on your own documents:
 

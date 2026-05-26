@@ -172,10 +172,10 @@ def main() -> None:
     print(
         f"Ingested {len(f_names)} files; "
         f"{len(full_text):,} characters of extracted text. "
-        "Stopping before the stubbed orchestration step. Exit code 2.",
+        "Stopping before the stubbed orchestration step.",
         file=sys.stderr,
     )
-    raise SystemExit(2)
+    raise SystemExit(0)
 
 
 if __name__ == "__main__":
