@@ -149,9 +149,10 @@ def main() -> None:
         file=sys.stderr,
     )
 
-    project = os.getenv("GOOGLE_CLOUD_PROJECT", os.getenv("VERTEX_PROJECT"))
-    location = os.getenv("GOOGLE_CLOUD_LOCATION", os.getenv("VERTEX_LOCATION", "us-central1"))
-    model = os.getenv("MODEL_NAME", "gemini-2.5-pro")
+    # Cloud configuration (GOOGLE_CLOUD_PROJECT / GOOGLE_CLOUD_LOCATION /
+    # MODEL_NAME) is intentionally not read here. The production main() reads
+    # it before invoking run_sequential_analysis; this sample short-circuits
+    # at the ingestion step, so cloud configuration is irrelevant.
 
     folder = Path(args.folder).expanduser().resolve()
     if not folder.is_dir():
