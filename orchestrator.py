@@ -129,11 +129,25 @@ def run_sequential_analysis(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Architecture document review and gap analysis."
+        description=(
+            "Architecture document review and gap analysis. "
+            "Portfolio sample: the orchestration stage is stubbed; see "
+            "README.md and PORTFOLIO_SAMPLE.md for what is shown and what "
+            "is withheld."
+        )
     )
     parser.add_argument("--folder", required=True, help="Directory containing architecture documents")
     parser.add_argument("--out", required=True, help="Output directory for analysis reports")
     args = parser.parse_args()
+
+    print(
+        "ai-architect-copilot-portfolio: this repository is a portfolio "
+        "sample. The three-stage Gemini pipeline is intentionally not "
+        "included here. The CLI will ingest the folder (demonstrating the "
+        "document-extraction layer) and then exit cleanly without "
+        "performing analysis.",
+        file=sys.stderr,
+    )
 
     project = os.getenv("GOOGLE_CLOUD_PROJECT", os.getenv("VERTEX_PROJECT"))
     location = os.getenv("GOOGLE_CLOUD_LOCATION", os.getenv("VERTEX_LOCATION", "us-central1"))
@@ -155,7 +169,13 @@ def main() -> None:
                 full_text += data
                 f_names.append(f.name)
 
-    run_sequential_analysis(full_text, f_names, project, location, model, args.out)
+    print(
+        f"Ingested {len(f_names)} files; "
+        f"{len(full_text):,} characters of extracted text. "
+        "Stopping before the stubbed orchestration step. Exit code 2.",
+        file=sys.stderr,
+    )
+    raise SystemExit(2)
 
 
 if __name__ == "__main__":

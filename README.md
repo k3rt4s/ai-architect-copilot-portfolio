@@ -36,20 +36,25 @@ The persona prompts are plain Markdown. Edit them in place to shift the review f
 | `.png` / `.jpg` / `.jpeg` | Tesseract OCR                     |
 | `.txt` / `.md`            | Raw UTF-8                         |
 
-## Quickstart
+## Running this sample
 
-Requires Python 3.10+, a Google Cloud project with Vertex AI / Gemini enabled, and Tesseract installed locally if you want OCR on image inputs.
+This repository is intentionally non-functional. The CLI exists so a reviewer can see the argument parsing, document-ingestion layer, and overall control flow, but the analysis stage is stubbed.
+
+Running
+
+```bash
+python orchestrator.py --folder "<docs_dir>" --out "<output_dir>"
+```
+
+will install dependencies, ingest every supported file under `<docs_dir>` via the extraction layer, print a portfolio-sample notice, and exit with code 2 before reaching the three-stage Gemini pipeline. The persona prompts under `personas/` are also placeholders; the production prompts are proprietary. See `PORTFOLIO_SAMPLE.md` for the full disclosure.
+
+Setup, if you want to exercise the ingestion path on your own documents:
 
 ```bash
 git clone https://github.com/k3rt4s/ai-architect-copilot-portfolio
 cd ai-architect-copilot-portfolio
 python -m venv .venv && . .venv/bin/activate   # or .venv\Scripts\activate on Windows
 pip install -r requirements.txt
-
-cp .env.example .env                            # then edit GOOGLE_CLOUD_PROJECT
-gcloud auth application-default login           # or use a service account
-
-python orchestrator.py --folder "<docs_dir>" --out "<output_dir>"
 ```
 
 ## Tech stack
